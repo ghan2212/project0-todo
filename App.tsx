@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { Alert, Button, FlatList, Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-
+import FlexBox from './componnents/flex.box';
+import Ionicons from '@expo/vector-icons/Ionicons';
 interface ITodo {
   id: number,
   name: string
@@ -26,13 +27,13 @@ export default function App() {
   }
 
   const deleteTodo = (id: number) => {
-    const newTodo = listTodo.filter(item => item.id !== id);
-    setListTodo(newTodo)
+    // const newTodo = listTodo.filter(item => item.id !== id);
+    // setListTodo(newTodo)
   }
   return (
     <TouchableWithoutFeedback
-    onPress={()=>Keyboard.dismiss()
-    }
+      onPress={() => Keyboard.dismiss()
+      }
     >
       <View style={styles.container}>
         {/* header */}
@@ -40,7 +41,7 @@ export default function App() {
           Hang
         </Text>
         {/* Form */}
-        <View style={styles.body}>
+        <View style={styles.form}>
           <TextInput
             value={todo}
             style={styles.TodoInput}
@@ -49,10 +50,10 @@ export default function App() {
           <Button title='Add todo'
             onPress={handleAddTodo}
           />
-          <Text> Form </Text>
+
         </View>
         {/* List Todo */}
-        <View style={styles.body}>
+        <View style={[styles.todo]}>
           <FlatList
             data={listTodo}
             keyExtractor={item => item.id + " "}
@@ -62,7 +63,11 @@ export default function App() {
                   onPress={() => deleteTodo(item.id)}
                   style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1 })}
                 >
-                  <Text style={styles.todoItem}>{item.name}</Text>
+                  <View style={styles.groupTodo}>
+                    <Text style={styles.todoItem}>{item.name}</Text>
+                    <Ionicons name="close" size={24} color="black" />
+                  </View>
+
                 </Pressable>
 
               )
@@ -72,29 +77,30 @@ export default function App() {
         </View>
       </View>
     </TouchableWithoutFeedback>
-
-
   );
 }
 //Css in Js
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingTop: 50,
+    borderWidth: 1,
+    borderColor: "red"
+  },
   header: {
     backgroundColor: "orange",
     paddingHorizontal: 20,
     textAlign: "center",
-    fontSize: 60
-
+    fontSize: 60,
+    flex: 1
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 50
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
-  body: {
-    paddingHorizontal: 15,
 
+  form: {
+    flex: 2
+  },
+  todo: {
+    flex: 8
   },
   //Form
   TodoInput: {
@@ -111,6 +117,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "dashed",
   },
-
+  groupTodo:{
+    flexDirection:"row"
+  }
 
 });
